@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>感谢参与 - 他人眼中的我</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .success-icon {
+            font-size: 5em;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            animation: bounce 1s ease;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+        p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 15px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #2196F3, #0b7dda);
+        }
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(33, 150, 243, 0.3);
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffeb3b;
+            animation: confetti-fall 3s linear forwards;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">🎉</div>
+        <h1>感谢您的参与！</h1>
+        <p>您的反馈对我来说非常宝贵</p>
+        <p>将帮助我更好地了解自己并不断改进</p>
+        <p>再次感谢您抽出时间填写这份问卷！</p>
+        
+        <div style="margin-top: 40px;">
+            <a href="index.html" class="btn">返回首页</a>
+            <a href="questionnaire.html" class="btn btn-secondary">再填一份</a>
+            <a href="results.html" class="btn btn-secondary">查看所有回复</a>
+        </div>
+    </div>
+
+    <script>
+        // 创建彩色纸屑效果
+        function createConfetti() {
+            const colors = ['#4CAF50', '#2196F3', '#ffeb3b', '#e91e63', '#9c27b0'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    
+                    // 移除元素
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        // 页面加载时播放效果
+        document.addEventListener('DOMContentLoaded', createConfetti);
+    </script>
+</body>
+</html>

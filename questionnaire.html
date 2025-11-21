@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>填写问卷 - 他人眼中的我</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .form-content {
+            padding: 40px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .hint {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e8f4f8;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            resize: vertical;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            border-color: #4CAF50;
+            background: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.1);
+            outline: none;
+            transform: translateY(-2px);
+        }
+        
+        textarea {
+            height: 120px;
+            min-height: 120px;
+        }
+        
+        .char-count {
+            font-size: 0.8em;
+            text-align: right;
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .count-number {
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .count-insufficient {
+            background: #ffebee;
+            color: #e74c3c;
+        }
+        
+        .count-sufficient {
+            background: #e8f5e8;
+            color: #27ae60;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+        
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 5px solid;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .alert-error {
+            background: #ffebee;
+            color: #c62828;
+            border-left-color: #e74c3c;
+        }
+        
+        .alert-success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border-left-color: #4CAF50;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::before {
+            content: "📝";
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>他人眼中的我</h1>
+            <p>您的真诚反馈将帮助我更好地成长</p>
+        </div>
+        
+        <div class="form-content">
+            <a href="index.html" class="back-btn">← 返回首页</a>
+            
+            <div id="alert-container"></div>
+
+            <form id="survey-form">
+                <div class="section-title">基本信息</div>
+                
+                <div class="form-group">
+                    <label for="respondent_name" class="required">你的名字</label>
+                    <div class="hint">请填写您的真实姓名，让我们更好地认识彼此</div>
+                    <input type="text" id="respondent_name" name="respondent_name" 
+                           placeholder="请输入您的姓名" 
+                           oninput="updateNameCount()" 
+                           required>
+                    <div class="char-count">
+                        <span>让我们认识您</span>
+                        <span class="count-number" id="name-count">0/2</span>
+                    </div>
+                </div>
+                
+                <div class="section-title">关于我的印象</div>
+                
+                <div class="form-group">
+                    <label for="impression" class="required">你眼中的我是什么样的？</label>
+                    <div class="hint">请用至少5个字符描述您对我的第一印象</div>
+                    <textarea id="impression" name="impression" 
+                              placeholder="例如：我觉得你是一个热情、细心、有责任心的人..."
+                              oninput="updateCharCount('impression')" 
+                              required></textarea>
+                    <div class="char-count">
+                        <span>分享您的真实感受</span>
+                        <span class="count-number" id="impression-count">0/5</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="strengths" class="required">你认为我最大的优点是什么？</label>
+                    <div class="hint">请真诚地告诉我您看到的闪光点</div>
+                    <textarea id="strengths" name="strengths" 
+                              placeholder="例如：你的沟通能力很强，总是能理解别人的想法..."
+                              oninput="updateCharCount('strengths')" 
+                              required></textarea>
+                    <div class="char-count">
+                        <span>发现优点，共同成长</span>
+                        <span class="count-number" id="strengths-count">0/5</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="improvements" class="required">你认为我需要改进的地方？</label>
+                    <div class="hint">您的建议对我非常宝贵，请坦诚相告</div>
+                    <textarea id="improvements" name="improvements" 
+                              placeholder="例如：有时候可以更果断一些，不要过于顾虑他人感受..."
+                              oninput="updateCharCount('improvements')" 
+                              required></textarea>
+                    <div class="char-count">
+                        <span>真诚建议，帮助进步</span>
+                        <span class="count-number" id="improvements-count">0/5</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="values" class="required">你认为我最看重什么？</label>
+                    <div class="hint">您观察到我最重视的价值观念是什么</div>
+                    <textarea id="values" name="values" 
+                              placeholder="例如：你似乎很重视友情和诚信，总是把朋友放在重要位置..."
+                              oninput="updateCharCount('values')" 
+                              required></textarea>
+                    <div class="char-count">
+                        <span>了解我的价值观</span>
+                        <span class="count-number" id="values-count">0/5</span>
+                    </div>
+                </div>
+                
+                <div class="section-title">其他想说的话</div>
+                
+                <div class="form-group">
+                    <label for="message">还有什么想对我说的吗？（选填）</label>
+                    <div class="hint">任何您想分享的想法、建议或祝福</div>
+                    <textarea id="message" name="message" 
+                              placeholder="这里可以写下任何您想对我说的话..."></textarea>
+                    <div class="char-count">
+                        <span>畅所欲言</span>
+                        <span>可选填写</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn" id="submit-btn">
+                    <span id="btn-text">提交问卷</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function updateNameCount() {
+            const input = document.getElementById('respondent_name');
+            const countElement = document.getElementById('name-count');
+            const count = input.value.length;
+            countElement.textContent = `${count}/2`;
+            
+            if (count < 2) {
+                countElement.className = 'count-number count-insufficient';
+            } else {
+                countElement.className = 'count-number count-sufficient';
+            }
+            
+            validateForm();
+        }
+        
+        function updateCharCount(fieldId) {
+            const textarea = document.getElementById(fieldId);
+            const countElement = document.getElementById(fieldId + '-count');
+            const count = textarea.value.length;
+            countElement.textContent = `${count}/5`;
+            
+            if (count < 5) {
+                countElement.className = 'count-number count-insufficient';
+            } else {
+                countElement.className = 'count-number count-sufficient';
+            }
+            
+            validateForm();
+        }
+        
+        function validateForm() {
+            const nameInput = document.getElementById('respondent_name');
+            const requiredFields = ['impression', 'strengths', 'improvements', 'values'];
+            let isValid = true;
+            
+            if (nameInput.value.length < 2) {
+                isValid = false;
+            }
+            
+            for (const fieldId of requiredFields) {
+                const textarea = document.getElementById(fieldId);
+                if (textarea.value.length < 5) {
+                    isValid = false;
+                    break;
+                }
+            }
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const btnText = document.getElementById('btn-text');
+            
+            if (isValid) {
+                submitBtn.disabled = false;
+                btnText.textContent = '提交问卷 ✓';
+            } else {
+                submitBtn.disabled = true;
+                btnText.textContent = '请完成所有必填项';
+            }
+            
+            return isValid;
+        }
+
+        // 表单提交处理
+        document.getElementById('survey-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                respondent_name: document.getElementById('respondent_name').value,
+                impression: document.getElementById('impression').value,
+                strengths: document.getElementById('strengths').value,
+                improvements: document.getElementById('improvements').value,
+                values: document.getElementById('values').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toLocaleString('zh-CN')
+            };
+
+            // 保存到本地存储
+            let responses = JSON.parse(localStorage.getItem('survey_responses') || '[]');
+            responses.push(formData);
+            localStorage.setItem('survey_responses', JSON.stringify(responses));
+            
+            // 显示成功消息
+            showAlert('感谢您的参与！您的回答已成功提交。', 'success');
+            
+            // 3秒后跳转到感谢页面
+            setTimeout(() => {
+                window.location.href = 'thank_you.html';
+            }, 2000);
+        });
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            validateForm();
+        });
+    </script>
+</body>
+</html>
